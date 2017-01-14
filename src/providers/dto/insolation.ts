@@ -1,12 +1,11 @@
 /**
  * Created by tymons on 14.01.17.
  */
-export class temperature{
+export class insolation {
 
   constructor(
     public id : number,
-    public valueOutdoor : number,
-    public valueIndoor : number,
+    public insolationValue : number,
     public measuredTimestamp : number,
     public hive_id : number
   ) {}

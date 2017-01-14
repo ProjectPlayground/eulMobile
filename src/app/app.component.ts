@@ -8,6 +8,7 @@ import { DashboardPage } from '../pages/dashboard/dashboard';
 import { ListPage } from '../pages/list/list';
 import { LoginPage } from "../pages/login/login";
 import {ManagerPage} from "../pages/manager/manager";
+import {HarvestPage} from "../pages/harvest/harvest";
 
 
 @Component({
@@ -31,7 +32,8 @@ export class MyApp {
       { title: 'Dashboard', component: DashboardPage },
       { title: 'Manager', component: ManagerPage},
       { title: 'Measurements', component: ListPage },
-      { title: 'Logout', component: LoginPage}
+      { title: 'Logout', component: LoginPage},
+      { title: 'Harvest', component: HarvestPage}
     ];
   }
 

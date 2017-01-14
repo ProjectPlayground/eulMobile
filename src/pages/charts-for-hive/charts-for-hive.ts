@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 
 import { NavController, NavParams } from 'ionic-angular';
 import {TemperatureChartPage} from "../temperature-chart/temperature-chart";
+import {HumidityChartPage} from "../humidity-chart/humidity-chart";
+import {InsolationChartPage} from "../insolation-chart/insolation-chart";
+import {RainfallChartPage} from "../rainfall-chart/rainfall-chart";
 
 
 @Component({
@@ -17,13 +20,16 @@ export class HiveChartPage {
       component : TemperatureChartPage
     },
     {
-      name : 'Humidity'
+      name : 'Humidity',
+      component : HumidityChartPage
     },
     {
-      name : 'Insolation'
+      name : 'Insolation',
+      component : InsolationChartPage
     },
     {
-      name : 'Rainfall'
+      name : 'Rainfall',
+      component : RainfallChartPage
     }
   ];
   constructor(public navCtrl: NavController, public navParams: NavParams) {

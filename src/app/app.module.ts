@@ -12,6 +12,10 @@ import {ManagerPage, ModalContentPage} from "../pages/manager/manager";
 import {ChartsModule} from "ng2-charts";
 import {TemperatureChartPage} from "../pages/temperature-chart/temperature-chart";
 import {MeasurementService} from "../providers/measurement-service";
+import {HumidityChartPage} from "../pages/humidity-chart/humidity-chart";
+import {InsolationChartPage} from "../pages/insolation-chart/insolation-chart";
+import {RainfallChartPage} from "../pages/rainfall-chart/rainfall-chart";
+import {HarvestPage} from "../pages/harvest/harvest";
 
 @NgModule({
   declarations: [
@@ -23,6 +27,10 @@ import {MeasurementService} from "../providers/measurement-service";
     LoginPage,
     ListPage,
     TemperatureChartPage,
+    HumidityChartPage,
+    InsolationChartPage,
+    RainfallChartPage,
+    HarvestPage
   ],
   imports: [
     ChartsModule,
@@ -37,7 +45,11 @@ import {MeasurementService} from "../providers/measurement-service";
     ModalContentPage,
     LoginPage,
     ListPage,
-    TemperatureChartPage
+    TemperatureChartPage,
+    HumidityChartPage,
+    InsolationChartPage,
+    RainfallChartPage,
+    HarvestPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler},
               AuthService,

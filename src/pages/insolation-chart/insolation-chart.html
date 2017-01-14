@@ -5,14 +5,38 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
   <ion-navbar>
-    <ion-title>insolation-chart</ion-title>
+    <ion-title>Insolation</ion-title>
   </ion-navbar>
-
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
+
+  <div style="margin-top: 10%; margin-right: 2%; margin-left: 2%; display: block; height: 50%" >
+    <canvas baseChart
+            [datasets]="mainChartData"
+            [labels]="mainChartLabels"
+            [options]="mainChartOptions"
+            [colors]="mainChartColours"
+            [legend]="mainChartLegend"
+            [chartType]="mainChartType"
+            (chartHover)="chartHovered($event)"
+            (chartClick)="chartClicked($event)">
+    </canvas>
+  </div>
+
+  <ion-list style="margin-top: 10%">
+    <ion-item>
+      <ion-label>Start Date</ion-label>
+      <ion-datetime displayFormat="MMM DD YYYY" [(ngModel)]="start.date" (ngModelChange)="onChange($event)"></ion-datetime>
+    </ion-item>
+  </ion-list>
+
+  <div style="position: absolute; bottom: 0px; width: 100%">
+    <div style="text-align: center">
+      <button ion-button block color="warning">Actual insolation: {{lastInsolation}}%</button>
+    </div>
+  </div>
 
 </ion-content>

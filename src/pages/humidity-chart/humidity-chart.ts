@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import {MeasurementService} from "../../providers/measurement-service";
+import {humidity} from "../../providers/dto/humidity";
+import {Utils} from "../../utils/Utils";
+import { LoadingController } from 'ionic-angular';
 
 /*
   Generated class for the HumidityChart page.
@@ -20,8 +23,8 @@ export class HumidityChartPage {
     date: null
   };
 
-  private temperatureMeasurements : Temperature[] = [];
-  private lastTemperature;
+  private humidityMeasurements : humidity[] = [];
+  private lasthumidity;
   public green:string =  '#4dbd74';
   public blue:string =   '#63c2de';
   public mainChartDataIndoor:Array<number> = [];
@@ -91,7 +94,8 @@ export class HumidityChartPage {
   public mainChartType:string = 'line';
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private measurements : MeasurementService) {
+              private measurements : MeasurementService,
+              public loadingCtrl : LoadingController) {
 
     this.currDate.setMonth(this.currDate.getMonth() - 1);
     this.start.date = this.currDate.toISOString();
@@ -110,12 +114,13 @@ export class HumidityChartPage {
     let endTimestamp = Date.now();
 
     console.log('Getting temperature from: ' + startTimestamp + ' to:' + endTimestamp);
-
-    this.measurements.getTemperatureMeasurements(hiveId, startTimestamp, endTimestamp)
+    this.measurements.showLoading();
+    this.measurements.getHumidityMeasurements(hiveId, startTimestamp, endTimestamp)
       .subscribe(
-        data => this.temperatureMeasurements = data,
+        data => this.humidityMeasurements = data,
         error => console.error(error),
         () =>   {
+          this.measurements.dismissLoading();
           this.updateChart();
           console.log('Getting humidity done!');
         }
@@ -124,15 +129,15 @@ export class HumidityChartPage {
 
   private updateChart() {
     let _mainChartDataTemp:Array<any>;
-    let _dataIndoor:Array<number> = new Array<number>(this.temperatureMeasurements.length);
-    let _dataOutdoor:Array<number> = new Array<number>(this.temperatureMeasurements.length);
-    let _chartLabels:Array<any> = new Array<any>(this.temperatureMeasurements.length);
+    let _dataIndoor:Array<number> = new Array<number>(this.humidityMeasurements.length);
+    let _dataOutdoor:Array<number> = new Array<number>(this.humidityMeasurements.length);
+    let _chartLabels:Array<any> = new Array<any>(this.humidityMeasurements.length);
 
     // copy values from service data
-    for (var i = 0; i < this.temperatureMeasurements.length; i++) {
-      _dataIndoor[i] = this.temperatureMeasurements[i].valueIndoor;
-      _dataOutdoor[i] = this.temperatureMeasurements[i].valueOutdoor;
-      _chartLabels[i] = new Date(this.temperatureMeasurements[i].measuredTimestamp).toLocaleString('pl-PL', {year:'2-digit', day:'2-digit', month:'2-digit', hour: '2-digit', minute:'2-digit'});
+    for (var i = 0; i < this.humidityMeasurements.length; i++) {
+      _dataIndoor[i] = this.humidityMeasurements[i].valueIndoor;
+      _dataOutdoor[i] = this.humidityMeasurements[i].valueOutdoor;
+      _chartLabels[i] = new Date(this.humidityMeasurements[i].measuredTimestamp).toLocaleString('pl-PL', {year:'2-digit', day:'2-digit', month:'2-digit', hour: '2-digit', minute:'2-digit'});
     }
 
     _mainChartDataTemp = [
@@ -149,18 +154,15 @@ export class HumidityChartPage {
     // Update objects
     this.mainChartLabels = _chartLabels;
     this.mainChartData = _mainChartDataTemp;
-    this.lastTemperature = _dataOutdoor[this.temperatureMeasurements.length - 1];
+    this.lasthumidity = _dataOutdoor[this.humidityMeasurements.length - 1];
   }
 
   ionViewDidLoad() {
-    let startDate = new Date();
-    startDate.setMonth(startDate.getMonth() - 1);
-    this.getTemperature(this.navParams.get('item'), this.currDate);
+    this.getHumidity(this.navParams.get('item'), this.currDate);
   }
 
   onChange() {
     var date = new Date(Date.parse(this.start.date));
-    console.log(date);
     this.getHumidity(this.navParams.get('item'), date);
   }
 }

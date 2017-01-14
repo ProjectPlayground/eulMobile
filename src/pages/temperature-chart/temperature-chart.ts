@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import {Temperature} from "../../providers/dto/temperature";
+import { temperature} from "../../providers/dto/temperature";
 import {MeasurementService} from "../../providers/measurement-service";
 import {Utils} from "../../utils/Utils";
 import {Platform} from 'ionic-angular';
@@ -23,7 +23,7 @@ export class TemperatureChartPage {
     date: null
   };
 
-  private temperatureMeasurements : Temperature[] = [];
+  private temperatureMeasurements : temperature[] = [];
   private lastTemperature;
   public green:string =  '#4dbd74';
   public blue:string =   '#63c2de';
@@ -109,22 +109,22 @@ export class TemperatureChartPage {
   }
 
   public getTemperature(hiveId : number, _startDate : Date) {
-    let startTimestamp =  _startDate.valueOf();
+    let startTimestamp = _startDate.valueOf();
     let endTimestamp = Date.now();
 
     console.log('Getting temperature from: ' + startTimestamp + ' to:' + endTimestamp);
-
+    this.measurements.showLoading();
     this.measurements.getTemperatureMeasurements(hiveId, startTimestamp, endTimestamp)
       .subscribe(
         data => this.temperatureMeasurements = data,
         error => console.error(error),
-        () =>   {
+        () => {
+          this.measurements.dismissLoading();
           this.updateChart();
           console.log('Getting humidity done!');
         }
       );
   }
-
   private updateChart() {
     let _mainChartDataTemp:Array<any>;
     let _dataIndoor:Array<number> = new Array<number>(this.temperatureMeasurements.length);
@@ -154,13 +154,11 @@ export class TemperatureChartPage {
     this.mainChartData = _mainChartDataTemp;
     this.lastTemperature = _dataOutdoor[this.temperatureMeasurements.length - 1];
   }
-
   ionViewDidLoad() {
     let startDate = new Date();
     startDate.setMonth(startDate.getMonth() - 1);
     this.getTemperature(this.navParams.get('item'), this.currDate);
   }
-
   onChange() {
     var date = new Date(Date.parse(this.start.date));
     console.log(date);
