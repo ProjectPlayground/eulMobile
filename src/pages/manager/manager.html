@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Hive manager</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+
+  <ion-list>
+    <ion-list-header>
+      Hives
+    </ion-list-header>
+    <a ion-item *ngFor="let hive of hives" (click)="openModal(hive)">
+      {{hive.name}}
+    </a>
+  </ion-list>
+
+  <ion-fab right bottom>
+    <button ion-fab color="danger" (click)="addHive()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
+
+</ion-content>

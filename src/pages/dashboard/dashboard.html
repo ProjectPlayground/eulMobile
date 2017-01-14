@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Dashboard</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-card>
+    <ion-item>
+      <ion-avatar item-left>
+        <img src="assets/icon/3.jpg">
+      </ion-avatar>
+      <h2 *ngIf="userInfo">{{userInfo.firstname}}'s hives</h2>
+      <p>{{ currDate | async | date:'yMMMMd' }}</p>
+    </ion-item>
+
+    <ion-card-header *ngFor="let hive of hives">
+      {{hive.name}}
+      <ion-card-content>
+        <ion-row>
+          <ion-col>ID : </ion-col>
+          <ion-col right> {{hive.id}} </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>location : </ion-col>
+          <ion-col right>{{hive.location}} </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>Active : </ion-col>
+          <ion-col right>YES </ion-col>
+        </ion-row>
+      </ion-card-content>
+      <hr>
+    </ion-card-header>
+  </ion-card>
+
+
+</ion-content>

@@ -1,27 +1,49 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
-import { HelloIonicPage } from '../pages/hello-ionic/hello-ionic';
-import { ItemDetailsPage } from '../pages/item-details/item-details';
+import { DashboardPage } from '../pages/dashboard/dashboard';
+import { HiveChartPage } from '../pages/charts-for-hive/charts-for-hive';
 import { ListPage } from '../pages/list/list';
+import {LoginPage} from "../pages/login/login";
+import {AuthService} from "../providers/auth-service";
+import {HiveService} from "../providers/hive-service";
+import {UserService} from "../providers/user-service";
+import {ManagerPage, ModalContentPage} from "../pages/manager/manager";
+import {ChartsModule} from "ng2-charts";
+import {TemperatureChartPage} from "../pages/temperature-chart/temperature-chart";
+import {MeasurementService} from "../providers/measurement-service";
 
 @NgModule({
   declarations: [
     MyApp,
-    HelloIonicPage,
-    ItemDetailsPage,
-    ListPage
+    DashboardPage,
+    HiveChartPage,
+    ManagerPage,
+    ModalContentPage,
+    LoginPage,
+    ListPage,
+    TemperatureChartPage,
   ],
   imports: [
-    IonicModule.forRoot(MyApp)
+    ChartsModule,
+    IonicModule.forRoot(MyApp),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HelloIonicPage,
-    ItemDetailsPage,
-    ListPage
+    DashboardPage,
+    HiveChartPage,
+    ManagerPage,
+    ModalContentPage,
+    LoginPage,
+    ListPage,
+    TemperatureChartPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler},
+              AuthService,
+              HiveService,
+              UserService,
+              MeasurementService
+  ]
 })
 export class AppModule {}

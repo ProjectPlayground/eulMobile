@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Description
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">
+        <span ion-text color="primary" showWhen="ios">Cancel</span>
+        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-avatar item-left>
+        <!--<img src="{{character.image}}">-->
+      </ion-avatar>
+      <h2>{{hive.name}}</h2>
+      <p>ID : {{hive.id}}</p>
+    </ion-item>
+    <a (click)="updateHiveName()">
+      <ion-item>
+        {{hive.name}}
+        <ion-note item-right>
+          Name
+        </ion-note>
+      </ion-item>
+    </a>
+    <a (click)="updateHiveLocation()">
+      <ion-item>
+        {{hive.location}}
+        <ion-note item-right>
+          Location
+        </ion-note>
+      </ion-item>
+    </a>
+    <ion-item>
+      {{hive.owner_id}}
+      <ion-note item-right>
+        Owner ID
+      </ion-note>
+    </ion-item>
+  </ion-list>
+
+  <div style="position: absolute; bottom: 0px; width: 100%">
+    <div style="text-align: center">
+      <button ion-button block color="danger" (click)="deleteHive()">Delete Hive</button>
+    </div>
+  </div>
+
+</ion-content>

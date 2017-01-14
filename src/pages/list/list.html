@@ -3,17 +3,17 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>My First List</ion-title>
+    <ion-title>Select hive</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
   <ion-list>
-    <button ion-item *ngFor="let item of items" (click)="itemTapped($event, item)">
-      <ion-icon name="{{item.icon}}" item-left></ion-icon>
-      {{item.title}}
+    <button ion-item *ngFor="let hive of hives" (click)="itemTapped($event, hive.id)">
+      <ion-icon name="stats"></ion-icon>
+        {{hive.name}}
       <div class="item-note" item-right>
-        {{item.note}}
+        {{hive.id}}
       </div>
     </button>
   </ion-list>

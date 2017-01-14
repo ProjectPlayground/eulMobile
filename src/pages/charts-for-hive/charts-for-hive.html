@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-navbar>
+    <button menuToggle *ngIf="!selectedHiveID">
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Hive Charts</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <button ion-item *ngFor="let chart of charts" (click)="chartSelected(chart)">
+      {{ chart.name }}
+    </button>
+  </ion-list>
+</ion-content>

@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 
 import { NavController, NavParams } from 'ionic-angular';
 
-import { ItemDetailsPage } from '../item-details/item-details';
+import { HiveChartPage} from '../charts-for-hive/charts-for-hive';
+import {Hive, HiveService} from "../../providers/hive-service";
 
 
 @Component({
@@ -11,29 +12,25 @@ import { ItemDetailsPage } from '../item-details/item-details';
 })
 export class ListPage {
   selectedItem: any;
-  icons: string[];
-  items: Array<{title: string, note: string, icon: string}>;
+  hives: Hive[] = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-    // If we navigated to this page, we will have an item available as a nav param
-    this.selectedItem = navParams.get('item');
-
-    this.icons = ['flask', 'wifi', 'beer', 'football', 'basketball', 'paper-plane',
-    'american-football', 'boat', 'bluetooth', 'build'];
-
-    this.items = [];
-    for(let i = 1; i < 11; i++) {
-      this.items.push({
-        title: 'Item ' + i,
-        note: 'This is item #' + i,
-        icon: this.icons[Math.floor(Math.random() * this.icons.length)]
-      });
-    }
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+              private hiveService : HiveService) {
+    this.updateHiveList();
   }
 
-  itemTapped(event, item) {
-    this.navCtrl.push(ItemDetailsPage, {
-      item: item
+  itemTapped(event, hiveID) {
+    this.navCtrl.push(HiveChartPage, {
+      item: hiveID
     });
+  }
+
+  private updateHiveList() {
+    this.hiveService.getHives()
+      .subscribe(
+        data => { console.log(data); this.hives = data},
+        error => console.error(error),
+        () => console.log('Getting hives info done! ' + this.hives[0])
+      );
   }
 }
