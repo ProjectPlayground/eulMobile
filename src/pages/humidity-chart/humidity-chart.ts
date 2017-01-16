@@ -99,6 +99,8 @@ export class HumidityChartPage {
 
     this.currDate.setMonth(this.currDate.getMonth() - 1);
     this.start.date = this.currDate.toISOString();
+
+    this.getHumidity(this.navParams.get('item'), this.currDate);
   }
 
   // events
@@ -126,7 +128,6 @@ export class HumidityChartPage {
         }
       );
   }
-
   private updateChart() {
     let _mainChartDataTemp:Array<any>;
     let _dataIndoor:Array<number> = new Array<number>(this.humidityMeasurements.length);
@@ -157,12 +158,13 @@ export class HumidityChartPage {
     this.lasthumidity = _dataOutdoor[this.humidityMeasurements.length - 1];
   }
 
-  ionViewDidLoad() {
-    this.getHumidity(this.navParams.get('item'), this.currDate);
-  }
-
   onChange() {
     var date = new Date(Date.parse(this.start.date));
     this.getHumidity(this.navParams.get('item'), date);
+  }
+  doRefresh(refresher) {
+    var date = new Date(Date.parse(this.start.date));
+    this.getHumidity(this.navParams.get('item'), date);
+    refresher.complete();
   }
 }

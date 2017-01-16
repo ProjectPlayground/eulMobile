@@ -14,24 +14,36 @@ export class DashboardPage {
   private userInfo : User;
   private currDate;
 
-  constructor(private _hiveService : HiveService,
-              private _userService : UserService) {}
+  constructor(private hiveService : HiveService,
+              private userService : UserService) {
 
-  ionViewDidLoad() {
-    this.currDate = Observable.interval(1000).map(x => new Date()).share();
-
-    this._userService.getUserInfo()
+    this.userService.getUserInfo()
       .subscribe(
         data => this.userInfo = data ,
         error => console.error(error),
         () => console.log('Getting user info done!')
       );
 
-    this._hiveService.getHives()
+    this.hiveService.getHives()
       .subscribe(
         data => { this.hives = data},
         error => console.error(error),
         () => console.log('Getting hives info done!')
+      );
+  }
+
+  ionViewDidLoad() {
+    this.currDate = Observable.interval(1000).map(x => new Date()).share();
+  }
+  doRefresh(refresher) {
+    this.hiveService.getHives()
+      .subscribe(
+        data => { this.hives = data},
+        error => console.error(error),
+        () => {
+          refresher.complete();
+          console.log('Getting hives info done!')
+        }
       );
   }
 

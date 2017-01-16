@@ -57,7 +57,7 @@ export class UserService extends ServiceHandler{
     let currUser =  JSON.parse(localStorage.getItem('currentUser'));
     let token = currUser && currUser.token;
     let headers = new Headers({ 'Content-Type': 'application/json',
-      'Authorization': token });
+                                'Authorization': token });
     let options = new RequestOptions({ headers: headers });
     let bodyString = JSON.stringify(notification);
 

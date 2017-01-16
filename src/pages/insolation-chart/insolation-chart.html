@@ -12,8 +12,10 @@
 
 
 <ion-content>
-
-  <div style="margin-top: 10%; margin-right: 2%; margin-left: 2%; display: block; height: 50%" >
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <div style="margin-top: 10%; display: block; width: 96%; height: 50%" >
     <canvas baseChart
             [datasets]="mainChartData"
             [labels]="mainChartLabels"

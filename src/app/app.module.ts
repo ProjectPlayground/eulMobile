@@ -16,6 +16,27 @@ import {HumidityChartPage} from "../pages/humidity-chart/humidity-chart";
 import {InsolationChartPage} from "../pages/insolation-chart/insolation-chart";
 import {RainfallChartPage} from "../pages/rainfall-chart/rainfall-chart";
 import {HarvestPage} from "../pages/harvest/harvest";
+import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
+import {WeightChartPage} from "../pages/weight-chart/weight-chart";
+
+
+const cloudSettings: CloudSettings = {
+  'core': {
+    'app_id': 'c4f412ee'
+  },
+  'push': {
+    'sender_id': '1013021222331',
+    'pluginConfig': {
+      'ios': {
+        'badge': true,
+        'sound': true
+      },
+      'android': {
+        'iconColor': '#343434'
+      }
+    }
+  }
+};
 
 @NgModule({
   declarations: [
@@ -30,11 +51,13 @@ import {HarvestPage} from "../pages/harvest/harvest";
     HumidityChartPage,
     InsolationChartPage,
     RainfallChartPage,
-    HarvestPage
+    WeightChartPage,
+    HarvestPage,
   ],
   imports: [
     ChartsModule,
     IonicModule.forRoot(MyApp),
+    CloudModule.forRoot(cloudSettings)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -49,6 +72,7 @@ import {HarvestPage} from "../pages/harvest/harvest";
     HumidityChartPage,
     InsolationChartPage,
     RainfallChartPage,
+    WeightChartPage,
     HarvestPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler},

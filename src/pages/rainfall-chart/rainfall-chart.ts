@@ -77,7 +77,6 @@ export class RainfallChartPage {
       pointHoverBackgroundColor: '#fff'
     }
   ];
-
   public mainChartLegend:boolean = true;
   public mainChartType:string = 'line';
 
@@ -86,6 +85,7 @@ export class RainfallChartPage {
 
     this.currDate.setMonth(this.currDate.getMonth() - 1);
     this.start.date = this.currDate.toISOString();
+    this.getRainfall(this.navParams.get('item'), this.currDate);
   }
 
   // events
@@ -138,12 +138,13 @@ export class RainfallChartPage {
     this.lastRainfall = _data[this.rainfallMeasurements.length - 1];
   }
 
-  ionViewDidLoad() {
-    this.getRainfall(this.navParams.get('item'), this.currDate);
-  }
-
   onChange() {
     var date = new Date(Date.parse(this.start.date));
     this.getRainfall(this.navParams.get('item'), date);
+  }
+  doRefresh(refresher) {
+    var date = new Date(Date.parse(this.start.date));
+    this.getRainfall(this.navParams.get('item'), date);
+    refresher.complete();
   }
 }

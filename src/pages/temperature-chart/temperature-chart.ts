@@ -98,6 +98,8 @@ export class TemperatureChartPage {
 
     this.currDate.setMonth(this.currDate.getMonth() - 1);
     this.start.date = this.currDate.toISOString();
+
+    this.getTemperature(this.navParams.get('item'), this.currDate);
   }
 
   // events
@@ -154,15 +156,15 @@ export class TemperatureChartPage {
     this.mainChartData = _mainChartDataTemp;
     this.lastTemperature = _dataOutdoor[this.temperatureMeasurements.length - 1];
   }
-  ionViewDidLoad() {
-    let startDate = new Date();
-    startDate.setMonth(startDate.getMonth() - 1);
-    this.getTemperature(this.navParams.get('item'), this.currDate);
-  }
+
   onChange() {
     var date = new Date(Date.parse(this.start.date));
     console.log(date);
     this.getTemperature(this.navParams.get('item'), date);
   }
-
+  doRefresh(refresher) {
+    var date = new Date(Date.parse(this.start.date));
+    this.getTemperature(this.navParams.get('item'), date);
+    refresher.complete();
+  }
 }

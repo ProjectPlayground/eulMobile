@@ -25,11 +25,10 @@ export class InsolationChartPage {
   private insolationMeasurements : insolation[] = [];
   private lastInsolation;
   public mainChartColor:string =  '#ffcc00';
-  public mainChartDataIndoor:Array<number> = [];
-  public mainChartDataOutdoor:Array<number> = [];
+  public mainChartInsolation:Array<number> = [];
   public mainChartData:Array<any> = [
     {
-      data: this.mainChartDataOutdoor,
+      data: this.mainChartInsolation,
       label: 'Outdoor'
     }
   ];
@@ -79,7 +78,6 @@ export class InsolationChartPage {
       pointHoverBackgroundColor: '#fff'
     }
   ];
-
   public mainChartLegend:boolean = true;
   public mainChartType:string = 'line';
 
@@ -88,6 +86,8 @@ export class InsolationChartPage {
 
     this.currDate.setMonth(this.currDate.getMonth() - 1);
     this.start.date = this.currDate.toISOString();
+
+    this.getInsolation(this.navParams.get('item'), this.currDate);
   }
 
   // events
@@ -115,40 +115,38 @@ export class InsolationChartPage {
         }
       );
   }
-
   private updateChart() {
-    let _mainChartDataTemp:Array<any>;
-    let _data:Array<number> = new Array<number>(this.insolationMeasurements.length);
-    let _chartLabels:Array<any> = new Array<any>(this.insolationMeasurements.length);
+    let mainChartDataTemp:Array<any>;
+    let data:Array<number> = new Array<number>(this.insolationMeasurements.length);
+    let chartLabels:Array<any> = new Array<any>(this.insolationMeasurements.length);
 
     // copy values from service data
     for (var i = 0; i < this.insolationMeasurements.length; i++) {
-      _data[i] = this.insolationMeasurements[i].insolationValue;
-      _chartLabels[i] = new Date(this.insolationMeasurements[i].measuredTimestamp).toLocaleString('pl-PL', {year:'numeric', day:'2-digit', month:'2-digit', hour: '2-digit', minute:'2-digit'});
+      data[i] = this.insolationMeasurements[i].insolationValue;
+      chartLabels[i] = new Date(this.insolationMeasurements[i].measuredTimestamp).toLocaleString('pl-PL', {year:'numeric', day:'2-digit', month:'2-digit', hour: '2-digit', minute:'2-digit'});
     }
 
-    _mainChartDataTemp = [
+    mainChartDataTemp = [
       {
-        data: _data,
+        data: data,
         label: 'Insolation'
       }
     ];
 
     // Update objects
-    this.mainChartLabels = _chartLabels;
-    this.mainChartData = _mainChartDataTemp;
-    this.lastInsolation = _data[this.insolationMeasurements.length - 1];
-  }
-
-  ionViewDidLoad() {
-    let startDate = new Date();
-    startDate.setMonth(startDate.getMonth() - 1);
-    this.getInsolation(this.navParams.get('item'), this.currDate);
+    this.mainChartLabels = chartLabels;
+    this.mainChartData = mainChartDataTemp;
+    this.lastInsolation = data[this.insolationMeasurements.length - 1];
   }
 
   onChange() {
     var date = new Date(Date.parse(this.start.date));
     console.log(date);
     this.getInsolation(this.navParams.get('item'), date);
+  }
+  doRefresh(refresher) {
+    var date = new Date(Date.parse(this.start.date));
+    this.getInsolation(this.navParams.get('item'), date);;
+    refresher.complete();
   }
 }

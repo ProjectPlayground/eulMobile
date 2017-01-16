@@ -8,6 +8,7 @@ import {humidity} from "./dto/humidity";
 import {insolation} from "./dto/insolation";
 import {rainfall} from "./dto/rainfall";
 import {Loading, LoadingController} from "ionic-angular";
+import {weight} from "./dto/weight";
 
 /*
   Generated class for the MeasurementService provider.
@@ -87,17 +88,17 @@ export class MeasurementService extends ServiceHandler{
       .catch(this.handleError);
   }
 
-  // getWeightMeasurements(hive_id : number, from_timestamp : number, to_timestamp : number) : Observable<Weight[]> {
-  //   let currUser =  JSON.parse(localStorage.getItem('currentUser'));
-  //   let token = currUser && currUser.token;
-  //   let headers = new Headers({ 'Content-Type': 'application/json',
-  //     'Authorization': token });
-  //   let options = new RequestOptions({ headers: headers });
-  //
-  //   return this.http.get(this.hiveURLRemote + 'weight/' + hive_id + '/' + from_timestamp + '/' + to_timestamp, options)
-  //     .map(this.extractBasicData)
-  //     .catch(this.handleError);
-  // }
+  getWeightMeasurements(hive_id : number, from_timestamp : number, to_timestamp : number) : Observable<weight[]> {
+    let currUser =  JSON.parse(localStorage.getItem('currentUser'));
+    let token = currUser && currUser.token;
+    let headers = new Headers({ 'Content-Type': 'application/json',
+      'Authorization': token });
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.get(this.hiveURLRemote + 'weight/' + hive_id + '/' + from_timestamp + '/' + to_timestamp, options)
+      .map(this.extractBasicData)
+      .catch(this.handleError);
+  }
 
   getLatestWeights(inputObject) {
     let currUser =  JSON.parse(localStorage.getItem('currentUser'));

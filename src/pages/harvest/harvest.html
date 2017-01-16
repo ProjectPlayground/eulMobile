@@ -9,11 +9,46 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Select hive</ion-title>
+    <ion-title>Harvest</ion-title>
   </ion-navbar>
 </ion-header>
 
 
-<ion-content padding>
-Harvest!
+<ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <div style="margin-top: 10%; display: block; width: 96%; height: 50%" >
+    <canvas baseChart class="chart"
+            [datasets]="barChartData"
+            [labels]="barChartLabels"
+            [options]="barChartOptions"
+            [legend]="barChartLegend"
+            [chartType]="barChartType"
+            (chartHover)="chartHovered($event)"
+            (chartClick)="chartClicked($event)">
+    </canvas>
+  </div>
+
+  <ion-list>
+    <ion-item>
+      Your current threshold is
+      <ion-note item-right>
+        {{thresholdWeightRemote}}kg
+      </ion-note>
+    </ion-item>
+    <ion-item>
+      <ion-range min="5" max="200" pin="true" [(ngModel)]="thresholdWeightSlider" color="secondary">
+        <ion-icon range-left small name="flame"></ion-icon>
+        <ion-icon range-right name="flame"></ion-icon>
+      </ion-range>
+    </ion-item>
+  </ion-list>
+
+  <div style="position: absolute; bottom: 0px; width: 100%">
+    <div style="text-align: center">
+      <button ion-button full (click)="updateNotificationSetup()">Update threshold!</button>
+    </div>
+  </div>
+
 </ion-content>

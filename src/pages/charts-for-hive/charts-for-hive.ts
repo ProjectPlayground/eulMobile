@@ -5,6 +5,7 @@ import {TemperatureChartPage} from "../temperature-chart/temperature-chart";
 import {HumidityChartPage} from "../humidity-chart/humidity-chart";
 import {InsolationChartPage} from "../insolation-chart/insolation-chart";
 import {RainfallChartPage} from "../rainfall-chart/rainfall-chart";
+import {WeightChartPage} from "../weight-chart/weight-chart";
 
 
 @Component({
@@ -30,6 +31,10 @@ export class HiveChartPage {
     {
       name : 'Rainfall',
       component : RainfallChartPage
+    },
+    {
+      name : 'Weight',
+      component : WeightChartPage
     }
   ];
   constructor(public navCtrl: NavController, public navParams: NavParams) {

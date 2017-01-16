@@ -24,9 +24,6 @@ export class LoginPage {
               private loadingCtrl: LoadingController) {}
 
   ionViewDidLoad() {
-    if (localStorage.getItem('currentUser')) {
-      this.navCtrl.setRoot(DashboardPage);
-    }
   }
 
   public login() {
