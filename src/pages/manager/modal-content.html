@@ -12,42 +12,129 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
+
   <ion-list>
+
     <ion-item>
       <ion-avatar item-left>
-        <!--<img src="{{character.image}}">-->
+      <!--<img src="{{character.image}}">-->
       </ion-avatar>
       <h2>{{hive.name}}</h2>
       <p>ID : {{hive.id}}</p>
     </ion-item>
-    <a (click)="updateHiveName()">
-      <ion-item>
-        {{hive.name}}
-        <ion-note item-right>
-          Name
-        </ion-note>
-      </ion-item>
-    </a>
-    <a (click)="updateHiveLocation()">
-      <ion-item>
-        {{hive.location}}
-        <ion-note item-right>
-          Location
-        </ion-note>
-      </ion-item>
-    </a>
+
     <ion-item>
-      {{hive.owner_id}}
-      <ion-note item-right>
-        Owner ID
-      </ion-note>
+      <ion-label stacked>Name</ion-label>
+      <ion-input [(ngModel)]="hive.name"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label stacked>Location</ion-label>
+      <ion-input [(ngModel)]="hive.location"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Active</ion-label>
+      <ion-checkbox item-right secondary [(ngModel)]="hive.active" checked="{{hive.active}}"></ion-checkbox>
+    </ion-item>
+
+    <ion-item>
+      <ion-label stacked>Service number</ion-label>
+      <ion-input [(ngModel)]="hive.sn"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Thermal Sensor 1</ion-label>
+      <ion-checkbox item-right secondary [(ngModel)]="hive.th1Status" checked="{{hive.th1Status}}"></ion-checkbox>
+    </ion-item>
+    <ion-item>
+      <ion-label>Thermal Sensor 2</ion-label>
+      <ion-checkbox item-right secondary [(ngModel)]="hive.th2Status" checked="{{hive.th2Status}}"></ion-checkbox>
+    </ion-item>
+    <ion-item>
+      <ion-label>Thermal Sensor 3</ion-label>
+      <ion-checkbox item-right secondary [(ngModel)]="hive.th3Status" checked="{{hive.th3Status}}"></ion-checkbox>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Microphone 1</ion-label>
+      <ion-checkbox item-right secondary [(ngModel)]="hive.mic1Status" checked="{{hive.mic1Status}}"></ion-checkbox>
+    </ion-item>
+    <ion-item>
+      <ion-label>Microphone 2</ion-label>
+      <ion-checkbox item-right secondary [(ngModel)]="hive.mic2Status" checked="{{hive.mic2Status}}"></ion-checkbox>
+    </ion-item>
+    <ion-item>
+      <ion-label>Microphone 3</ion-label>
+      <ion-checkbox item-right secondary [(ngModel)]="hive.mic3Status" checked="{{hive.mic3Status}}"></ion-checkbox>
+    </ion-item>
+    <ion-item>
+      <ion-label>Microphone 4</ion-label>
+      <ion-checkbox item-right secondary [(ngModel)]="hive.mic4Status" checked="{{hive.mic4Status}}"></ion-checkbox>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Solar</ion-label>
+      <ion-checkbox item-right secondary [(ngModel)]="hive.solarStatus" checked="{{hive.solarStatus}}"></ion-checkbox>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Rain sensor</ion-label>
+      <ion-checkbox item-right secondary [(ngModel)]="hive.rainStatus" checked="{{hive.rainStatus}}"></ion-checkbox>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Weight sensor</ion-label>
+      <ion-checkbox item-right secondary [(ngModel)]="hive.weightStatus" checked="{{hive.weightStatus}}"></ion-checkbox>
+    </ion-item>
+
+    <ion-item>
+      <ion-label stacked>Thermal Sensor Interval [s]</ion-label>
+      <ion-input type="number" [(ngModel)]="hive.thIntervalSec"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label stacked>Microphone Interval [s]</ion-label>
+      <ion-input type="number" [(ngModel)]="hive.micIntervalSec"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label stacked>Solar Interval [s]</ion-label>
+      <ion-input type="number" [(ngModel)]="hive.solarIntervalSec"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label stacked>Rain Interval [s]</ion-label>
+      <ion-input type="number" [(ngModel)]="hive.rainIntervalSec"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label stacked>Weight Interval [s]</ion-label>
+      <ion-input type="number" [(ngModel)]="hive.weightIntervalSec"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label stacked>Internal Communication Interval [s]</ion-label>
+      <ion-input type="number" [(ngModel)]="hive.internalCommIntervalSec"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label stacked>Access point ID</ion-label>
+      <ion-input [(ngModel)]="hive.accessPoint.accessPointID"></ion-input>
     </ion-item>
   </ion-list>
 
-  <div style="position: absolute; bottom: 0px; width: 100%">
-    <div style="text-align: center">
-      <button ion-button block color="danger" (click)="deleteHive()">Delete Hive</button>
+  <ion-row>
+    <div style="width: 50%">
+      <div style="text-align: center">
+        <button ion-button block color="danger" (click)="deleteHive()">Delete Hive</button>
+      </div>
     </div>
-  </div>
+    <div style="right: 0px; width: 50%">
+      <div style="text-align: center">
+        <button ion-button block (click)="updateHive()">Update Hive</button>
+      </div>
+    </div>
+  </ion-row>
 
 </ion-content>

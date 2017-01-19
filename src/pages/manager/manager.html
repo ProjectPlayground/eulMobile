@@ -8,6 +8,10 @@
 </ion-header>
 <ion-content>
 
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <ion-list>
     <ion-list-header>
       Hives
@@ -15,6 +19,11 @@
     <a ion-item *ngFor="let hive of hives" (click)="openModal(hive)">
       {{hive.name}}
     </a>
+
+    <ion-item>
+      <ion-label color="primary" stacked>Server communication interval</ion-label>
+      <ion-input type="number" placeholder="{{interval}}" (change)="onIntervalChange($event.target.value)"></ion-input>
+    </ion-item>
   </ion-list>
 
   <ion-fab right bottom>

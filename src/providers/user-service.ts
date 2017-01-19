@@ -88,4 +88,16 @@ export class UserService extends ServiceHandler{
       .map(this.extractBasicData)
   }
 
+  public updateNotificationSetup(notification : Notification) : Observable<Notification> {
+    let currUser =  JSON.parse(localStorage.getItem('currentUser'));
+    let token = currUser && currUser.token;
+    let headers = new Headers({ 'Content-Type': 'application/json',
+      'Authorization': token });
+    let options = new RequestOptions({ headers: headers });
+    let bodyString = JSON.stringify(notification);
+
+    return this.http.put(this.userInfoURLRemote + 'notification/', bodyString, options)
+      .map(this.extractBasicData)
+  }
+
 }

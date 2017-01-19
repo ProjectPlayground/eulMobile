@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {NavController, NavParams, ToastController} from 'ionic-angular';
 import {weight} from "../../providers/dto/weight";
-import {Hive, HiveService} from "../../providers/hive-service";
+import {HiveService} from "../../providers/hive-service";
 import {MeasurementService} from "../../providers/measurement-service";
 import {
   Push,
@@ -9,6 +9,7 @@ import {
 } from '@ionic/cloud-angular';
 import {UserService} from "../../providers/user-service";
 import {notification} from "../../providers/dto/notification";
+import {hive} from "../../providers/dto/hive";
 
 /*
   Generated class for the Harvest page.
@@ -22,7 +23,7 @@ import {notification} from "../../providers/dto/notification";
 })
 export class HarvestPage {
 
-  private hives: Hive[] = [];
+  private hives: hive[] = [];
   private notificationModelRemote;
   private thresholdWeightSlider;
   private thresholdWeightRemote;
@@ -66,7 +67,7 @@ export class HarvestPage {
         data => notificationSetup = data,
         error => console.error(error),
         () => {
-          this.notificationModelRemote = notificationSetup
+          this.notificationModelRemote = notificationSetup;
           this.thresholdWeightRemote = notificationSetup.weightThreshold;
           this.thresholdWeightSlider = notificationSetup.weightThreshold;
         }
@@ -75,9 +76,11 @@ export class HarvestPage {
 
   private updateNotificationSetup() {
     let notificationModel = this.notificationModelRemote;
-    notificationModel.weightThreshold = this.thresholdWeightSlider
-    this.userService.setNotifications(notificationModel)
+    notificationModel.weightThreshold = this.thresholdWeightSlider;
+    notificationModel.deviceId = localStorage.getItem('firebaseToken');
+    this.userService.updateNotificationSetup(notificationModel)
       .subscribe(
+        data => console.log(data),
         error => this.presentToast('Error :('),
         () => {
           this.presentToast('Threshold updated!');
@@ -88,7 +91,7 @@ export class HarvestPage {
 
   private getHivesAndUpdateBarChart() {
     this.measurements.showLoading();
-    this.hiveService.getHives()
+    this.hiveService.getHivesPublic()
       .subscribe(
         data => this.hives = data,
         error => console.error(error),

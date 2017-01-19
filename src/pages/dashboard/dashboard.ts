@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { HiveService, Hive} from "../../providers/hive-service";
+import { HiveService} from "../../providers/hive-service";
 import {UserService, User} from "../../providers/user-service";
 import {Observable} from "rxjs";
+import { hive } from "../../providers/dto/hive";
 
 
 @Component({
@@ -10,7 +11,7 @@ import {Observable} from "rxjs";
 })
 export class DashboardPage {
 
-  private hives: Hive[] = [];
+  private hives: hive[] = [];
   private userInfo : User;
   private currDate;
 
@@ -24,7 +25,7 @@ export class DashboardPage {
         () => console.log('Getting user info done!')
       );
 
-    this.hiveService.getHives()
+    this.hiveService.getHivesPublic()
       .subscribe(
         data => { this.hives = data},
         error => console.error(error),
@@ -36,7 +37,7 @@ export class DashboardPage {
     this.currDate = Observable.interval(1000).map(x => new Date()).share();
   }
   doRefresh(refresher) {
-    this.hiveService.getHives()
+    this.hiveService.getHivesPublic()
       .subscribe(
         data => { this.hives = data},
         error => console.error(error),

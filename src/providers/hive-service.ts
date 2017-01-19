@@ -3,15 +3,9 @@ import {Http, Headers, RequestOptions} from '@angular/http';
 import 'rxjs/add/operator/map';
 import {ServiceHandler} from "./service-handler";
 import {Observable} from "rxjs";
+import {hive} from "./dto/hive";
+import {AccessPoint} from "./dto/AccessPoint";
 
-export class Hive{
-
-  constructor(
-    public name: string,
-    public location: string,
-    public id?: number
-  ) {}
-}
 /*
   Generated class for the HiveService provider.
 
@@ -28,19 +22,31 @@ export class HiveService extends ServiceHandler {
     super();
   }
 
-  getHives() : Observable<Hive[]> {
+  getHivesPublic() : Observable<hive[]> {
     let currUser =  JSON.parse(localStorage.getItem('currentUser'));
     let token = currUser && currUser.token;
     let headers = new Headers({ 'Content-Type': 'application/json',
       'Authorization': token });
     let options = new RequestOptions({ headers: headers });
 
-    return this.http.get(this.hiveURLRemote, options)
+    return this.http.get(this.hiveURLRemote + 'public', options)
       .map(this.extractBasicData)
       .catch(this.handleError);
   }
 
-  addHive(body : Hive): Observable<Hive> {
+  getHivesFullConfig() : Observable<hive[]> {
+    let currUser =  JSON.parse(localStorage.getItem('currentUser'));
+    let token = currUser && currUser.token;
+    let headers = new Headers({ 'Content-Type': 'application/json',
+      'Authorization': token });
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.get(this.hiveURLRemote + 'internal', options)
+      .map(this.extractBasicData)
+      .catch(this.handleError);
+  }
+
+  addHive(body : hive): Observable<hive> {
     let currUser =  JSON.parse(localStorage.getItem('currentUser'));
     let token = currUser && currUser.token;
     let bodyString = JSON.stringify(body);
@@ -63,8 +69,8 @@ export class HiveService extends ServiceHandler {
     return this.http.delete(this.hiveURLRemote + id, options);
   }
 
-  updateHive(body : Hive) {
 
+  updateHive(body : hive) {
     console.log(body);
     let currUser =  JSON.parse(localStorage.getItem('currentUser'));
     let token = currUser && currUser.token;
@@ -75,5 +81,4 @@ export class HiveService extends ServiceHandler {
 
     return this.http.put(this.hiveURLRemote, bodyString, options)
   }
-
 }

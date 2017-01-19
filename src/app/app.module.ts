@@ -18,6 +18,7 @@ import {RainfallChartPage} from "../pages/rainfall-chart/rainfall-chart";
 import {HarvestPage} from "../pages/harvest/harvest";
 import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
 import {WeightChartPage} from "../pages/weight-chart/weight-chart";
+import {AccessPointService} from "../providers/access-point-service";
 
 
 const cloudSettings: CloudSettings = {
@@ -79,6 +80,7 @@ const cloudSettings: CloudSettings = {
               AuthService,
               HiveService,
               UserService,
+              AccessPointService,
               MeasurementService
   ]
 })

@@ -3,7 +3,8 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
 import { HiveChartPage} from '../charts-for-hive/charts-for-hive';
-import {Hive, HiveService} from "../../providers/hive-service";
+import { HiveService} from "../../providers/hive-service";
+import {hive} from "../../providers/dto/hive";
 
 
 @Component({
@@ -12,7 +13,7 @@ import {Hive, HiveService} from "../../providers/hive-service";
 })
 export class ListPage {
   selectedItem: any;
-  hives: Hive[] = [];
+  hives: hive[] = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private hiveService : HiveService) {
@@ -26,7 +27,7 @@ export class ListPage {
   }
 
   private updateHiveList() {
-    this.hiveService.getHives()
+    this.hiveService.getHivesPublic()
       .subscribe(
         data => { console.log(data); this.hives = data},
         error => console.error(error),

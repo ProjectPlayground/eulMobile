@@ -13,8 +13,7 @@ import {
   Push,
   PushToken
 } from '@ionic/cloud-angular';
-import {notification} from "../providers/dto/notification";
-import {UserService} from "../providers/user-service";
+import {UserService, Notification} from "../providers/user-service";
 
 
 @Component({
@@ -26,6 +25,7 @@ export class MyApp {
   // make HelloIonicPage the root (or first) page
   rootPage: any;
   pages: Array<{title: string, component: any}>;
+  private notification : Notification;
 
   constructor(
     public platform: Platform,
@@ -60,9 +60,13 @@ export class MyApp {
     this.push.register().then((t: PushToken) => {
       return this.push.saveToken(t);
     }).then((t: PushToken) => {
-      console.log('Token saved:', t.token);
-      localStorage.setItem('firebaseToken', t.token);
-      this.postNotificationsSetup(new notification(false, true, 80, ''));
+      if(t.token == null) {
+        alert('Cannot obtain firebase token.');
+      } else {
+        console.log('Token saved:', t.token);
+        localStorage.setItem('firebaseToken', t.token);
+      }
+      this.updateTokenOnServer();
     });
 
     this.push.rx.notification()
@@ -80,13 +84,26 @@ export class MyApp {
     this.nav.setRoot(page.component);
   }
 
-  private postNotificationsSetup(notification : notification) {
-    notification.deviceId = localStorage.getItem('firebaseToken');
-    this.userService.setNotifications(notification)
+  private updateTokenOnServer() {
+    this.userService.getNotificationSetup()
       .subscribe(
-        error => console.error(error),
+        data => this.notification = data,
+        error => console.log(error),
         () => {
-          console.log('Posting notifications done!');
+          this.notification.deviceId = localStorage.getItem('firebaseToken');
+          if(this.notification != null) {
+            this.userService.updateNotificationSetup(this.notification)
+              .subscribe(
+                data => console.log(data),
+                error => console.log(error),
+              )
+          } else {
+            this.userService.setNotifications(this.notification)
+              .subscribe(
+                data => console.log(data),
+                error => console.log(error),
+              )
+          }
         }
       );
   }

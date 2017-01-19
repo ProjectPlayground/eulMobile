@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 
 import { ModalController, Platform, NavParams, ViewController } from 'ionic-angular';
-import {HiveService, Hive} from "../../providers/hive-service";
+import {HiveService} from "../../providers/hive-service";
 import { AlertController } from 'ionic-angular';
 import { ToastController } from 'ionic-angular';
+import {hive} from "../../providers/dto/hive";
+import {AccessPoint} from "../../providers/dto/AccessPoint";
+import {AccessPointService} from "../../providers/access-point-service";
 
 
 @Component({
@@ -11,13 +14,18 @@ import { ToastController } from 'ionic-angular';
 })
 export class ManagerPage {
 
-  private hives: Hive[] = [];
+  private hives: hive[] = [];
+  private accessPoints: AccessPoint[] = [];
+  private interval : number = 0;
+  private accessPointID : number;
 
   constructor(public modalCtrl: ModalController,
               private hiveService: HiveService,
+              private accessPointService: AccessPointService,
               public alertCtrl: AlertController,
               public toastCtrl: ToastController) {
     this.updateHiveList();
+    this.getAccessPoints();
   }
 
   private openModal(hive) {
@@ -52,8 +60,11 @@ export class ManagerPage {
         {
           text: 'Save',
           handler: data => {
-            var hive : Hive = new Hive(data.name, data.location);
-            this.hiveService.addHive(hive)
+            var hiveEntry : hive = new hive(data.name, data.location, false, "");
+            hiveEntry.accessPoint = new AccessPoint();
+            hiveEntry.accessPoint.accessPointID = 1;
+
+            this.hiveService.addHive(hiveEntry)
               .subscribe(
                 data => jsonResponse = JSON.stringify(data),
                 error => this.presentToast('Error, something went wrong :('),
@@ -70,12 +81,32 @@ export class ManagerPage {
     prompt.present();
   }
   private updateHiveList() {
-    this.hiveService.getHives()
+    this.hiveService.getHivesFullConfig()
       .subscribe(
-        data => { console.log(data); this.hives = data},
+        data => this.hives = data,
         error => console.error(error),
-        () => console.log('Getting hives info done! ' + this.hives[0])
       );
+  }
+  private getAccessPoints() {
+    this.accessPointService.getAccessPoints()
+      .subscribe(
+        data => { this.accessPoints = data },
+        error => console.error(error),
+        () => {
+          this.interval = this.accessPoints[0].commInterval;
+        }
+      );
+  }
+
+  private onIntervalChange(data) {
+      this.accessPoints[0].commInterval = data;
+      console.log(this.accessPoints[0]);
+      this.accessPointService.updateAccessPoints(this.accessPoints[0])
+        .subscribe(
+          data => console.log(data),
+          error => console.log(error),
+          () =>  { this.presentToast('Interval updated!'); }
+        )
   }
 
   private presentToast(message : string) {
@@ -85,6 +116,15 @@ export class ManagerPage {
       position: 'bottom'
     });
     toast.present();
+  }
+  private doRefresh(refresher) {
+    this.getAccessPoints();
+    this.hiveService.getHivesFullConfig()
+      .subscribe(
+        data => { console.log(data); this.hives = data},
+        error => console.error(error),
+        () => refresher.complete()
+      );
   }
 }
 
@@ -103,87 +143,25 @@ export class ModalContentPage {
     this.hive = this.params.data;
   }
 
-  dismiss() {
+  private dismiss() {
     this.viewCtrl.dismiss();
   }
 
-  private updateHiveName() {
+  private updateHive() {
     var jsonResponse;
 
-    let prompt = this.alertCtrl.create({
-      title: 'New name',
-      message: "Enter new name for this hive",
-      inputs: [
-        {
-          name: 'name',
-          placeholder: 'New hive name'
+    this.hiveService.updateHive(this.hive)
+      .subscribe(
+        data => jsonResponse = JSON.stringify(data),
+        error => {
+          this.presentToast('Fail. Cannot update: ' + error);
+          this.dismiss();
         },
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          handler: data => {
-            console.log('Cancel clicked');
-          }
-        },
-        {
-          text: 'Save',
-          handler: data => {
-            var hive : Hive = new Hive(data.name, this.hive.location, this.hive.id);
-            this.hiveService.updateHive(hive)
-              .subscribe(
-                data => jsonResponse = JSON.stringify(data),
-                error => this.presentToast('Error, something went wrong :('),
-                () => {
-                  this.hive.name = data.name;
-                  this.presentToast('Name updated successfully!');
-                }
-              );
-            console.log('Saved clicked');
-          }
+        () => {
+          this.presentToast('Hive updated!');
+          this.dismiss();
         }
-      ]
-    });
-    prompt.present();
-  }
-  private updateHiveLocation() {
-    var jsonResponse;
-
-    let prompt = this.alertCtrl.create({
-      title: 'New location',
-      message: "Enter new location for this hive",
-      inputs: [
-        {
-          name: 'location',
-          placeholder: 'New hive location'
-        },
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          handler: data => {
-            console.log('Cancel clicked');
-          }
-        },
-        {
-          text: 'Save',
-          handler: data => {
-            var hive : Hive = new Hive(this.hive.name, data.location, this.hive.id);
-            this.hiveService.updateHive(hive)
-              .subscribe(
-                data => jsonResponse = JSON.stringify(data),
-                error => this.presentToast('Error, something went wrong :('),
-                () => {
-                  this.hive.location = data.location;
-                  this.presentToast('Location updated successfully!');
-                }
-              );
-            console.log('Saved clicked');
-          }
-        }
-      ]
-    });
-    prompt.present();
+      );
   }
   private deleteHive() {
     var jsonResponse;
